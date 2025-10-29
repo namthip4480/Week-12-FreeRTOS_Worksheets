@@ -365,11 +365,44 @@ xTaskCreatePinnedToCore(low_priority_task, "LowPrio", 3072, NULL, 1, NULL, 1);  
 
 ## คำถามสำหรับวิเคราะห์
 
-1. Priority ไหนทำงานมากที่สุด? เพราะอะไร?
-2. เกิด Priority Inversion หรือไม่? จะแก้ไขได้อย่างไร?
-3. Tasks ที่มี priority เดียวกันทำงานอย่างไร?
-4. การเปลี่ยน Priority แบบ dynamic ส่งผลอย่างไร?
-5. CPU utilization ของแต่ละ priority เป็นอย่างไร?
+---
+
+### 1. Priority ไหนทำงานมากที่สุด? เพราะอะไร?
+
+Task ที่มี **priority สูงสุด** จะถูก scheduler เลือกให้ทำงานก่อนเสมอ  
+FreeRTOS ใช้ **preemptive scheduler** → Task priority สูงกว่าจะมีสิทธิ์ถูกรันก่อน Task priority ต่ำ
+
+---
+
+### 2. เกิด Priority Inversion หรือไม่? จะแก้ไขได้อย่างไร?
+
+- **Priority Inversion** เกิดขึ้นเมื่อ Task priority สูงถูกบล็อกโดย Task priority ต่ำที่ถือ resource  
+- การแก้ไข: ใช้ **Priority Inheritance** หรือ **Mutex แบบ priority inheritance**  
+  → ทำให้ Task priority ต่ำชั่วคราวสูงขึ้นจนเสร็จงานและปล่อย resource
+
+---
+
+### 3. Tasks ที่มี priority เดียวกันทำงานอย่างไร?
+
+- Scheduler จะใช้ **time slicing**  
+- Task ที่มี priority เท่ากันจะถูกสลับรันสลับกันเท่า ๆ กัน  
+- ผลลัพธ์: แต่ละ Task ได้เวลาทำงานใกล้เคียงกัน
+
+---
+
+### 4. การเปลี่ยน Priority แบบ dynamic ส่งผลอย่างไร?
+
+- การเปลี่ยน priority ของ Task ขณะรัน → scheduler จะปรับลำดับการรันทันที  
+- Task ที่ได้ priority สูงขึ้นจะถูกรันก่อน Task อื่น  
+- Task ที่ได้ priority ต่ำลงอาจถูก preempted ทันที
+
+---
+
+### 5. CPU utilization ของแต่ละ priority เป็นอย่างไร?
+
+- Task **priority สูง** จะใช้ CPU มากกว่า Task priority ต่ำ  
+- Task priority ต่ำจะรันก็ต่อเมื่อไม่มี Task priority สูงรันอยู่  
+- ในระบบ preemptive → CPU utilization แปรผันตามจำนวน Task และ priority
 
 ## ผลการทดลองที่คาดหวัง
 
