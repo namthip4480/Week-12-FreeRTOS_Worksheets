@@ -404,6 +404,8 @@ FreeRTOS ใช้ **preemptive scheduler** → Task priority สูงกว่
 - Task priority ต่ำจะรันก็ต่อเมื่อไม่มี Task priority สูงรันอยู่  
 - ในระบบ preemptive → CPU utilization แปรผันตามจำนวน Task และ priority
 
+---
+
 ## ผลการทดลองที่คาดหวัง
 
 | Priority | Expected Runs | Percentage | Behavior |
