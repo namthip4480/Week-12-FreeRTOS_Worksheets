@@ -407,20 +407,54 @@ ESP_LOGI(TAG, "Task state: %s", state_names[state]);
 
 ## Checklist การทำงาน
 
-- [ ] สร้าง Task พื้นฐานสำเร็จ
-- [ ] เข้าใจ Task parameters และ return values
-- [ ] ทดสอบ Task priorities
-- [ ] ใช้ Task management APIs (suspend/resume)
-- [ ] แสดง runtime statistics
-- [ ] ทำแบบฝึกหัดครบ
+- [x] สร้าง Task พื้นฐานสำเร็จ
+- [x] เข้าใจ Task parameters และ return values
+- [x] ทดสอบ Task priorities
+- [x] ใช้ Task management APIs (suspend/resume)
+- [x] แสดง runtime statistics
+- [x] ทำแบบฝึกหัดครบ
 
 ## คำถามทบทวน
 
-1. เหตุใด Task function ต้องมี infinite loop?
-2. ความหมายของ stack size ใน xTaskCreate() คืออะไร?
-3. ความแตกต่างระหว่าง vTaskDelay() และ vTaskDelayUntil()?
-4. การใช้ vTaskDelete(NULL) vs vTaskDelete(handle) ต่างกันอย่างไร?
-5. Priority 0 กับ Priority 24 อันไหนสูงกว่า?
+---
+
+### 1. เหตุใด Task function ต้องมี infinite loop?
+
+Task function ต้องมี infinite loop เพราะ Task จะทำงานต่อเนื่องในระบบ RTOS  
+ถ้า Task function จบ ตัว Task จะถูกลบออกจาก scheduler และไม่สามารถทำงานซ้ำได้  
+
+---
+
+### 2. ความหมายของ stack size ใน `xTaskCreate()`
+
+Stack size คือ **ขนาดของหน่วยความจำ stack ที่จัดให้ Task ใช้**  
+ใช้เก็บตัวแปรท้องถิ่น, ค่า return ของฟังก์ชัน และ context ของ Task  
+ถ้า stack เล็กเกินไป อาจเกิด stack overflow และ Task ทำงานผิดพลาดได้
+
+---
+
+### 3. ความแตกต่างระหว่าง `vTaskDelay()` และ `vTaskDelayUntil()`
+
+- `vTaskDelay()` → หน่วงเวลาแบบ relative delay (นับจากเวลาปัจจุบัน)  
+- `vTaskDelayUntil()` → หน่วงเวลาแบบ periodic, ทำให้ Task ทำงานเป็นจังหวะแม่นยำตาม period  
+> สรุป: `vTaskDelayUntil()` เหมาะกับ Task ที่ต้องการรันแบบ periodic
+
+---
+
+### 4. การใช้ `vTaskDelete(NULL)` vs `vTaskDelete(handle)`
+
+- `vTaskDelete(NULL)` → ลบ Task ที่เรียกใช้งานตัวเอง  
+- `vTaskDelete(handle)` → ลบ Task ที่ระบุด้วย handle  
+> สรุป: NULL ใช้ลบตัวเอง, handle ใช้ลบ Task อื่น
+
+---
+
+### 5. Priority 0 กับ Priority 24 อันไหนสูงกว่า?
+
+Priority **24** สูงกว่า **0**  
+ใน FreeRTOS ยิ่งตัวเลข priority มาก ยิ่งมีสิทธิ์ถูกรันก่อน
+
+---
 
 ## บทสรุป
 
