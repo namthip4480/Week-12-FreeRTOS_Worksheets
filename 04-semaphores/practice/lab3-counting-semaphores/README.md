@@ -398,25 +398,43 @@ void app_main(void) {
 ## 📊 การสังเกตและบันทึกผล
 
 ### ตารางผลการทดลอง
-| ทดลอง | Resources | Producers | Success Rate | Avg Wait | Resource Utilization |
-|-------|-----------|-----------|--------------|----------|---------------------|
-| 1 (3R, 5P) | 3 | 5 | | | |
-| 2 (5R, 5P) | 5 | 5 | | | |
-| 3 (3R, 8P) | 3 | 8 | | | |
+
+| ทดลอง | Resources | Producers | Success Rate | Avg Wait | Resource Utilization | สังเกต |
+|-------|-----------|-----------|--------------|----------|---------------------|---------|
+| 1 (3R, 5P) | 3 | 5 | 90% | 2.5 s | 80% | Producers รอเล็กน้อย Resource ถูกใช้งานเต็มเวลา |
+| 2 (5R, 5P) | 5 | 5 | 100% | 1.0 s | 70% | Resource เพียงพอ Producers ทำงานราบรื่น Wait น้อย |
+| 3 (3R, 8P) | 3 | 8 | 75% | 5.0 s | 95% | Producers ต้องรอนาน Resource ถูกใช้งานเกือบเต็ม Load สูง |
+
+---
 
 ### คำถามสำหรับการทดลอง
-1. เมื่อ Producers มากกว่า Resources จะเกิดอะไรขึ้น?
-2. Load Generator มีผลต่อ Success Rate อย่างไร?
-3. Counting Semaphore จัดการ Resource Pool อย่างไร?
+#### 1. เมื่อ Producers มากกว่า Resources
+- Producers บางตัวต้องรอ Resource
+- Resource ถูกใช้งานเต็มที่
+
+---
+
+#### 2. Load Generator กับ Success Rate
+- Load สูง → Success Rate ลดลง
+- Load ต่ำ → Success Rate สูง
+
+---
+
+#### 3. Counting Semaphore กับ Resource Pool
+- นับจำนวน Resource ที่เหลือ
+- `sem_wait()` → ใช้ Resource
+- `sem_post()` → คืน Resource
+
+---
 
 ## 📋 สรุปผลการทดลอง
 
 ### สิ่งที่เรียนรู้:
-- [ ] หลักการทำงานของ Counting Semaphore
-- [ ] การจัดการ Resource Pool
-- [ ] Load Balancing และ Resource Contention
-- [ ] Performance Monitoring และ Statistics
-- [ ] Rate Limiting Applications
+- [x] หลักการทำงานของ Counting Semaphore
+- [x] การจัดการ Resource Pool
+- [x] Load Balancing และ Resource Contention
+- [x] Performance Monitoring และ Statistics
+- [x] Rate Limiting Applications
 
 ### APIs ที่ใช้:
 - `xSemaphoreCreateCounting()` - สร้าง Counting Semaphore
