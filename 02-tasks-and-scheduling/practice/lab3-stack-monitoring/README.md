@@ -452,11 +452,48 @@ void dynamic_stack_monitor(TaskHandle_t task_handle, const char* task_name)
 
 ## คำถามสำหรับวิเคราะห์
 
-1. Task ไหนใช้ stack มากที่สุด? เพราะอะไร?
-2. การใช้ heap แทน stack มีข้อดีอย่างไร?
-3. Stack overflow เกิดขึ้นเมื่อไหร่และทำอย่างไรป้องกัน?
-4. การตั้งค่า stack size ควรพิจารณาจากอะไร?
-5. Recursion ส่งผลต่อ stack usage อย่างไร?
+---
+
+### 1. Task ไหนใช้ stack มากที่สุด? เพราะอะไร?
+
+Task ที่มี **ตัวแปรท้องถิ่นเยอะ** หรือ **เรียกฟังก์ชันลึกหลายชั้น** จะใช้ stack มากที่สุด  
+- เช่น Task ที่ทำงานกับ buffer ขนาดใหญ่ หรือ recursive function  
+
+---
+
+### 2. การใช้ heap แทน stack มีข้อดีอย่างไร?
+
+- ลดการใช้ stack ของ Task  
+- memory size ปรับได้ยืดหยุ่นตาม runtime  
+- เหมาะกับข้อมูลขนาดใหญ่ที่ไม่จำเป็นต้องอยู่ใน stack  
+
+---
+
+### 3. Stack overflow เกิดขึ้นเมื่อไหร่และทำอย่างไรป้องกัน?
+
+- เกิดเมื่อ Task ใช้ stack เกินขนาดที่กำหนดใน `xTaskCreate()`  
+- ป้องกันโดย:
+  - กำหนด stack size ให้พอดีกับความต้องการ
+  - ใช้ `uxTaskGetStackHighWaterMark()` ตรวจสอบ stack usage  
+  - หลีกเลี่ยงตัวแปรท้องถิ่นขนาดใหญ่หรือ recursion มากเกินไป
+
+---
+
+### 4. การตั้งค่า stack size ควรพิจารณาจากอะไร?
+
+- ขนาดของตัวแปรท้องถิ่นใน Task  
+- ความลึกของการเรียกฟังก์ชัน (call depth)  
+- การใช้ library หรือ API ที่มี stack usage สูง  
+- เผื่อ safety margin ประมาณ 20–30% ของ stack ที่คำนวณได้
+
+---
+
+### 5. Recursion ส่งผลต่อ stack usage อย่างไร?
+
+- การเรียกฟังก์ชันแบบ recursive จะใช้ stack เพิ่มตามจำนวนชั้นของการเรียก  
+- หาก recursion ลึกเกินไป → เสี่ยง **stack overflow**
+
+---
 
 ## ผลการทดลองที่คาดหวัง
 
