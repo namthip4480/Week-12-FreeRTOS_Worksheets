@@ -256,12 +256,7 @@ idf.py build
 
 ### 3. คำสั่ง `idf.py set-target`
 
-ใช้สำหรับกำหนดชนิดของชิป (Target Chip) ให้ระบบ build ถูกต้อง เช่น:
-
-```bash
-idf.py set-target esp32
-idf.py set-target esp32s3
-idf.py set-target esp32c3
+ใช้สำหรับกำหนดชนิดของชิป (Target Chip) ให้ระบบ build ให้ถูกต้อง 
 
 ---
 
