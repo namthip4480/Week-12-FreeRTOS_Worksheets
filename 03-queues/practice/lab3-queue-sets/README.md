@@ -425,9 +425,9 @@ vTaskDelay(pdMS_TO_TICKS(500)); // ส่งทุก 0.5 วินาที
 ### ตารางผลการทดลอง
 | ทดลอง | Sensor | User | Network | Timer | Total | สังเกต |
 |-------|--------|------|---------|-------|-------|---------|
-| 1 (ปกติ) | 22 msgs | 18 msgs | 25 msgs | 10 msgs | 75 msgs | LED กะพริบสม่ำเสมอ ไม่มีการ drop ข้อมูล |
-| 2 (ไม่มี Sensor) | 0 msgs | 18 msgs | 25 msgs | 10 msgs | 53 msgs | LED กะพริบน้อยลง ข้อมูล Sensor หายไป Task Processor ยังประมวลผล Queue อื่นปกติ |
-| 3 (Network เร็ว) | 22 msgs | 18 msgs | 50 msgs | 10 msgs | 100 msgs | LED กะพริบถี่ขึ้นตาม Network บางครั้ง Queue ใกล้เต็ม แต่ไม่มีการ drop ข้อมูล Task Processor สามารถจัดการได้ทัน |
+| 1 (ปกติ) | 22 msgs | 18 msgs | 25 msgs | 10 msgs | 75 msgs | LED กะพริบสม่ำเสมอ  |
+| 2 (ไม่มี Sensor) | 0 msgs | 18 msgs | 25 msgs | 10 msgs | 53 msgs | LED กะพริบน้อยลง  |
+| 3 (Network เร็ว) | 22 msgs | 18 msgs | 50 msgs | 10 msgs | 100 msgs | LED กะพริบถี่ขึ้นตาม Network  |
 
 ---
 
